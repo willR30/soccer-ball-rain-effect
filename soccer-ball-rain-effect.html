@@ -1,0 +1,83 @@
+<div id="football-rain"></div>
+
+<style>
+  #football-rain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+  }
+
+  .football-ball {
+    position: fixed;
+    top: -100px;
+    background-image: url('BALL_IMAGE_URL'); /* Reemplaza con la URL de la imagen de la pelota */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    will-change: transform, opacity;
+    animation-name: football-fall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes football-fall {
+    0% {
+      transform: translateY(-100px) rotate(0deg);
+      opacity: 1;
+    }
+
+    90% {
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateY(calc(100vh + 150px)) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  /* Respeta las preferencias de accesibilidad */
+  @media (prefers-reduced-motion: reduce) {
+    #football-rain {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("football-rain");
+
+    // Configuración
+    const totalBalls = 60;       // Cantidad de pelotas
+    const duration = 8000;       // Duración total del efecto (ms)
+
+    for (let i = 0; i < totalBalls; i++) {
+      const ball = document.createElement("div");
+      ball.className = "football-ball";
+
+      // Tamaño aleatorio (30px - 70px)
+      const size = Math.random() * 40 + 30;
+      ball.style.width = `${size}px`;
+      ball.style.height = `${size}px`;
+
+      // Posición horizontal aleatoria
+      ball.style.left = `${Math.random() * 100}vw`;
+
+      // Duración individual de caída (4 - 7 segundos)
+      ball.style.animationDuration = `${Math.random() * 3 + 4}s`;
+
+      // Retraso aleatorio para que no caigan todas juntas
+      ball.style.animationDelay = `${Math.random() * 3}s`;
+
+      container.appendChild(ball);
+    }
+
+    // Elimina el contenedor después de finalizar el efecto
+    setTimeout(() => {
+      container.remove();
+    }, duration);
+  });
+</script>
